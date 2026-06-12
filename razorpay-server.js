@@ -22,7 +22,7 @@ app.post('/create-qr', async (req, res) => {
   const { amount, courseName, courseId } = req.body;
   try {
     const response = await axios.post(
-      'https://api.razorpay.com/v1/payments/qr-codes',
+      'https://api.razorpay.com/v1/payments/qr_codes',
       {
         type:           'upi_qr',
         name:           'BOARD EDUCATION NILESH',
@@ -44,7 +44,7 @@ app.post('/create-qr', async (req, res) => {
 app.get('/check-qr/:qrId', async (req, res) => {
   try {
     const response = await axios.get(
-      `https://api.razorpay.com/v1/payments/qr-codes/${req.params.qrId}/payments`,
+      `https://api.razorpay.com/v1/payments/qr_codes/${req.params.qrId}/payments`,
       { headers: { 'Authorization': `Basic ${AUTH}` } }
     );
     const payments = response.data.items || [];
