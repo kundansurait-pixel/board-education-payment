@@ -40,7 +40,26 @@ app.post('/create-qr', async (req, res) => {
   }
 });
 
-// ══ 2. Check QR Payment Status ══
+// ══ 2. Create Razorpay Order (for Online Payment) ══
+app.post('/create-order', async (req, res) => {
+  const { amount, courseName, courseId } = req.body;
+  try {
+    const response = await axios.post(
+      'https://api.razorpay.com/v1/orders',
+      {
+        amount:   amount * 100, // paise
+        currency: 'INR',
+        notes:    { courseId, courseName },
+      },
+      { headers: { 'Authorization': `Basic ${AUTH}`, 'Content-Type': 'application/json' } }
+    );
+    res.json({ success: true, order: response.data });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.response?.data || err.message });
+  }
+});
+
+// ══ 3. Check QR Payment Status ══
 app.get('/check-qr/:qrId', async (req, res) => {
   try {
     const response = await axios.get(
